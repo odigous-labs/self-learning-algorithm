@@ -15,7 +15,7 @@ from params import params as Params
 from core4 import core_controller as Core
 from util import kmeans_cluster_gsom as KMeans_Cluster
 
-def generate_output_config(dataset, SF, forget_threshold, output_save_location):
+def generate_output_config(dataset, SF, forget_threshold, output_save_location, temporal_contexts):
 
     # Output data config
     output_save_filename = '{}_data_'.format(dataset)
@@ -33,7 +33,9 @@ def generate_output_config(dataset, SF, forget_threshold, output_save_location):
 
     return output_loc, output_loc_images
 
-def hoof_to_gsom(SF, learning_itr, smoothing_irt, plot_for_itr, forget_threshold, data_filename, dataset, output_save_location):
+def hoof_to_gsom(
+        SF, learning_itr, smoothing_irt, plot_for_itr, forget_threshold, data_filename, dataset, output_save_location,
+        temporal_contexts):
     # Init GSOM Parameters
     gsom_params = Params.GSOMParameters(SF, learning_itr, smoothing_irt, distance=Params.DistanceFunction.EUCLIDEAN,
                                         temporal_context_count=temporal_contexts, forget_itr_count=forget_threshold)
@@ -41,9 +43,9 @@ def hoof_to_gsom(SF, learning_itr, smoothing_irt, plot_for_itr, forget_threshold
     generalise_params = Params.GeneraliseParameters(gsom_params)
 
     # Process the input files
-    input_database, labels = Parser.InputParser.get_video_hoof_feature_vector(data_filename)
+    input_database, labels, original_frame_list = Parser.InputParser.get_video_hoof_feature_vector(data_filename)
     # input_data_features_list, labels = get_video_feature_vector()
-    output_loc, output_loc_images = generate_output_config(dataset, SF, forget_threshold, output_save_location)
+    output_loc, output_loc_images = generate_output_config(dataset, SF, forget_threshold, output_save_location, temporal_contexts)
 
     # Setup the age threshold based on the input vector length
     generalise_params.setup_age_threshold(input_database[0].shape[0])
@@ -68,7 +70,7 @@ def hoof_to_gsom(SF, learning_itr, smoothing_irt, plot_for_itr, forget_threshold
                                           join(output_loc, 'latent_space_' + str(SF) + '_labels'))
 
     print('Completed.')
-    return gsom_nodemap
+    return gsom_nodemap, original_frame_list
 
 if __name__ == '__main__':
 
@@ -87,7 +89,7 @@ if __name__ == '__main__':
     experiment_id = 'Exp-' + datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
     output_save_location = join('output/', experiment_id)
 
-    gsom_nodemap = hoof_to_gsom(
+    gsom_nodemap, original_frame_list = hoof_to_gsom(
         SF,
         learning_itr,
         smoothing_irt,
@@ -95,7 +97,8 @@ if __name__ == '__main__':
         forget_threshold,
         data_filename,
         dataset,
-        output_save_location
+        output_save_location,
+        temporal_contexts
     )
 
     kmeans_som = KMeans_Cluster.KMeansSOM()

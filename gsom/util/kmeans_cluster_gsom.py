@@ -40,7 +40,8 @@ class KMeansSOM:
     def _gsom_to_array(self, gsom_map):
         gsom_map_array = []
         for key, node in gsom_map.items():
-            gsom_map_array.append(node.recurrent_weights[0])
+            if(len(node.get_mapped_labels())>0):
+                gsom_map_array.append(node.recurrent_weights[0])
         return gsom_map_array
 
     def cluster_GSOM(self, gsom_map, n_clusters=2):
@@ -62,7 +63,8 @@ class KMeansSOM:
         """
 
         gsom_list = self._gsom_to_array(gsom_map)
-
+        print("gsom_list")
+        print(gsom_list)
         clf = k_means(gsom_list, n_clusters=n_clusters)
 
         centroids = clf[0]
