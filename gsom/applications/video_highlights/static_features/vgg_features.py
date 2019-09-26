@@ -10,6 +10,7 @@ import data_parser as Parser
 from util import display as Display_Utils
 from util.kmeans_cluster import KMeansSOM
 from util.FrameSeperator import FrameSeperator
+from util import video_to_frames
 
 from params import params as Params
 from core4 import core_controller as Core
@@ -26,6 +27,9 @@ plot_for_itr = 4  # Unused parameter - just for visualization. Keep this as it i
 # File Config
 experiment_id = 'Exp-' + datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
 output_save_location = join('output/', experiment_id)
+
+path_to_input_video = "path to the input video"
+path_to_generated_frames = "./generated_frames/"
 
 
 def generate_output_config(SF, forget_threshold):
@@ -54,8 +58,9 @@ if __name__ == '__main__':
                                             temporal_context_count=temporal_contexts, forget_itr_count=forget_threshold)
         generalise_params = Params.GeneraliseParameters(gsom_params)
 
+        video_to_frames.get_frames(video_input_path = path_to_input_video,frame_output_path=path_to_generated_frames);
         # Process the input files
-        input_vector_database, labels = Parser.InputParser.parse_input_frames("./../../../../generated_frames")
+        input_vector_database, labels = Parser.InputParser.parse_input_frames(path_to_generated_frames)
         output_loc, output_loc_images = generate_output_config( SF, forget_threshold)
 
         # Setup the age threshold based on the input vector length
