@@ -44,6 +44,17 @@ class KMeansSOM:
                 gsom_map_array.append(node.recurrent_weights[0])
         return gsom_map_array
 
+    def _gsom_to_array_with_select_K_in_KMeans(self, gsom_map, element_count_threshold):
+        k_value=0
+        gsom_map_array = []
+        for key, node in gsom_map.items():
+            if(len(node.get_mapped_labels())>0):
+                gsom_map_array.append(node.recurrent_weights[0])
+            if (len(node.get_mapped_labels()) >= element_count_threshold):
+                k_value+=1
+
+        return gsom_map_array, k_value
+
     def cluster_GSOM(self, gsom_map, n_clusters=2):
         """
         Parameters
@@ -71,3 +82,16 @@ class KMeansSOM:
         labels = clf[1]
 
         return gsom_list, centroids, labels
+
+
+    def cluster_GSOM_with_K_selection_in_KMeans(self, gsom_map, element_count_threshold, n_clusters=1):
+
+        gsom_list, k_value = self._gsom_to_array_with_select_K_in_KMeans(gsom_map, element_count_threshold)
+        print("gsom_list")
+        print(gsom_list)
+        clf = k_means(gsom_list, n_clusters=n_clusters)
+
+        centroids = clf[0]
+        labels = clf[1]
+
+        return gsom_list, centroids, labels, k_value

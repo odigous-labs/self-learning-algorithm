@@ -70,7 +70,7 @@ def hoof_to_gsom(
                                           join(output_loc, 'latent_space_' + str(SF) + '_labels'))
 
     print('Completed.')
-    return gsom_nodemap, original_frame_list
+    return gsom_nodemap, original_frame_list, input_database
 
 if __name__ == '__main__':
 
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     experiment_id = 'Exp-' + datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
     output_save_location = join('output/', experiment_id)
 
-    gsom_nodemap, original_frame_list = hoof_to_gsom(
+    gsom_nodemap, original_frame_list, input_database = hoof_to_gsom(
         SF,
         learning_itr,
         smoothing_irt,
