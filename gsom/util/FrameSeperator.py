@@ -9,6 +9,7 @@ class FrameSeperator:
         ordered_gsom_nodemap  = collections.OrderedDict(gsom_nodemap)
         nodes = list(ordered_gsom_nodemap.values())
         clustered_labels = {}
+
         for i in range (len(clusters.keys())):
             clustered_labels[i] = []
 
