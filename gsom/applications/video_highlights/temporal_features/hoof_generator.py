@@ -26,6 +26,7 @@ def process_video(file_path):
     bins_n = 2
 
     cap = cv2.VideoCapture(file_path)
+
     cap.set(3, 32)
     cap.set(4, 32)
     ret, prev = cap.read()
@@ -33,7 +34,7 @@ def process_video(file_path):
     prevgray = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
     prevgray = cv2.normalize(src=prevgray, dst=None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     # prevgray = cv2.normalize(src=prevgray, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC1)
-    print(prevgray)
+
     while True:
 
         ret, img = cap.read()
