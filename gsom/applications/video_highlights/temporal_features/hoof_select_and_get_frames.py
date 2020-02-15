@@ -46,7 +46,7 @@ def write_frame_output(output_path, cluster_folder, img_name, img):
     file_path = join(output_path + "/", str(cluster_folder), img_name)
     if not os.path.exists(highlight_output):
         os.makedirs(highlight_output)
-    print(highlight_output)
+    # print(highlight_output)
     cv2.imwrite(file_path, img)
 
 
@@ -104,7 +104,7 @@ def get_gsom_node_array_with_new_feature_vectors(gsom_nodemap, gsom_list, labels
 
     for x in range(no_of_nodes):
         gsom_node_weights = gsom_list[x]
-        print("\nNode:" + str(x))
+        # print("\nNode:" + str(x))
         for key, node in gsom_nodemap.items():
             if (len(node.get_mapped_labels()) > 0):
                 if (gsom_node_weights.tolist() == node.recurrent_weights[0].tolist()):
@@ -168,7 +168,7 @@ def get_gsom_dic_converted_feature_vectors(gsom_nodemap, gsom_list, labels, inpu
         clusters_dictionary[node_frame_list[2]]['frame_label'].extend(node_frame_list[3])
         clusters_dictionary[node_frame_list[2]]['grade_of_frames'].extend(node_frame_list[5])
 
-    print(clusters_dictionary)
+    # print(clusters_dictionary)
     return clusters_dictionary
 
 
@@ -240,7 +240,7 @@ def run(SF,
     global_centroid, k_value = get_k_and_global_centroid(gsom_nodemap, 10)
 
     print("k_value : " + str(k_value))
-
+    k_value=10
     gsom_list, centroids, labels = cluster_gsom_nodes(gsom_nodemap, k_value)
 
     # print("gsom list")
@@ -254,7 +254,8 @@ def run(SF,
     frame_node_list = get_gsom_node_array(gsom_nodemap, gsom_list, labels)
 
     dynamic_cluster_first_end = time.time()
-    print("Dynamic Feature first level Clustered: " + str(dynamic_cluster_first_end-dynamic_cluster_first_start))
+    print("hoof_select_and_get_frames Dynamic Feature first level Clustered: " +
+          str(dynamic_cluster_first_end-dynamic_cluster_first_start))
 
     for each_item in frame_node_list:
         for frame in each_item[3]:
@@ -279,18 +280,18 @@ def run(SF,
         centroids
     )
 
-    print(gsom_dic_converted_feature_vectors[0])
+    # print(gsom_dic_converted_feature_vectors[0])
     # print(num_frame_threshold)
-
-    print(len(gsom_dic_converted_feature_vectors[1]['feature_vec']))
-    print(len(gsom_dic_converted_feature_vectors[1]['frame_label']))
-    print(len(gsom_dic_converted_feature_vectors[1]['cluster_centroid']))
-    print(len(gsom_dic_converted_feature_vectors[1]['grade_of_frames']))
-
-    print((gsom_dic_converted_feature_vectors[1]['feature_vec']))
-    print((gsom_dic_converted_feature_vectors[1]['frame_label']))
-    print((gsom_dic_converted_feature_vectors[1]['cluster_centroid']))
-    print((gsom_dic_converted_feature_vectors[1]['grade_of_frames']))
+    #
+    # print(len(gsom_dic_converted_feature_vectors[1]['feature_vec']))
+    # print(len(gsom_dic_converted_feature_vectors[1]['frame_label']))
+    # print(len(gsom_dic_converted_feature_vectors[1]['cluster_centroid']))
+    # print(len(gsom_dic_converted_feature_vectors[1]['grade_of_frames']))
+    #
+    # print((gsom_dic_converted_feature_vectors[1]['feature_vec']))
+    # print((gsom_dic_converted_feature_vectors[1]['frame_label']))
+    # print((gsom_dic_converted_feature_vectors[1]['cluster_centroid']))
+    # print((gsom_dic_converted_feature_vectors[1]['grade_of_frames']))
 
     """Second level clustering"""
     output, dynamic_highlights = recluster.recluster_gsom(gsom_dic_converted_feature_vectors,
@@ -299,8 +300,7 @@ def run(SF,
                                                           second_level_smoothing_irt,
                                                           second_level_temporal_contexts,
                                                           second_level_forget_threshold,
-                                                          second_level_dataset,
-                                                          original_frame_list)
+                                                          second_level_dataset)
     return output, dynamic_highlights
 
 

@@ -20,12 +20,12 @@ from gsom.util import kmeans_cluster_gsom as KMeans_Cluster
 
 
 def recluster_gsom(converted_feature_vector_dictionary, SF, learning_itr, smoothing_irt, temporal_contexts,
-                   forget_threshold, dataset, original_frame_list):
+                   forget_threshold, dataset):
     print('Re-clustering process started\n\n')
     count = 0
 
     cluster_no_threshold = 2
-    no_subclusters = 5
+    no_subclusters = 10
 
     recluster_arr = []
     final_cluster_out = []
@@ -143,7 +143,7 @@ def recluster_gsom(converted_feature_vector_dictionary, SF, learning_itr, smooth
                     # cv2.imwrite(file_path, original_frame_list[int(frame)])
 
     # print(recluster_arr)
-    print(final_cluster_out)
+    # print(final_cluster_out)
     dynamic_recluster_end = time.time()
     print("Dynamic Feature level 2 reclusterd: " + str(dynamic_recluster_end-dynamic_recluster_start-excluded_time))
     return recluster_arr, dynamic_highlights

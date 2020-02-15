@@ -79,7 +79,7 @@ def get_gsom_node_array(gsom_nodemap, gsom_list, labels):
             if (len(node.get_mapped_labels()) > 0):
                 if (gsom_node_weights.tolist() == node.recurrent_weights[0].tolist()):
                     frame_list.append([key, node, labels[x], node.get_mapped_labels()])
-                    break;
+                    break
     return frame_list
 
 
@@ -234,7 +234,7 @@ def run(SF,
         second_level_forget_threshold,
         second_level_dataset):
 
-    original_frame_list = vid_2_frame_osh.get_frames(video_input_path=path_to_input_video,
+    number_of_frames = vid_2_frame_osh.get_frames(video_input_path=path_to_input_video,
                                                      frame_output_path=path_to_generated_frames)
     # Process the input files
     input_vector_database, labels = Parser.InputParser.parse_input_frames(path_to_generated_frames)
@@ -257,7 +257,7 @@ def run(SF,
     result_dict = controller.run(input_vector_database, plot_for_itr, None, output_loc_images)
 
     static_node_first_end = time.time()
-    print("Dynamic Feature first level GSOM Generated: " + str(static_node_first_end - static_node_first_start))
+    print("Static Feature first level GSOM Generated: " + str(static_node_first_end - static_node_first_start))
 
     print('Algorithms completed in', round(time.time() - controller_start, 2), '(s)')
     saved_name = Utils.Utilities.save_object(result_dict, join(output_loc, 'gsom_nodemap_SF-{}'.format(SF)))
@@ -273,7 +273,7 @@ def run(SF,
     frame_node_list = get_gsom_node_array(gsom_nodemap, gsom_list, labels)
 
     static_cluster_first_end = time.time()
-    print("Dynamic Feature first level Clustered: " + str(static_cluster_first_end - static_cluster_first_start))
+    print("Static Feature first level Clustered: " + str(static_cluster_first_end - static_cluster_first_start))
 
     gsom_dic_converted_feature_vectors = get_gsom_dic_converted_feature_vectors(
         gsom_nodemap,
@@ -293,10 +293,9 @@ def run(SF,
                                                          second_level_smoothing_irt,
                                                          second_level_temporal_contexts,
                                                          second_level_forget_threshold,
-                                                         second_level_dataset,
-                                                         original_frame_list)
+                                                         second_level_dataset)
 
-    return output, static_highlights, original_frame_list
+    return output, static_highlights, number_of_frames
 
 
 if __name__ == '__main__':

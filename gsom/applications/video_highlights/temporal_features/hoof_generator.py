@@ -1,7 +1,9 @@
+import os
 
 import numpy as np
 import cv2
 import glob
+import time
 
 def calc_hist(flow):
 
@@ -23,21 +25,37 @@ def calc_hist(flow):
 def process_video(file_path):
     video_hist = []
     original_frame_list = []
-    bins_n = 2
-
+    bins_n = 5
+    start_t = time.time()
     cap = cv2.VideoCapture(file_path)
+    # cap.open(
+    #     "/home/pawara/PycharmProjects/Test/"
+    #     "Action/2-self-learning-algorithm-results/self-learning-algorithm-results-colab/gsom/applications"
+    #     "/video_highlights/data/3.mp4")
 
     cap.set(3, 32)
     cap.set(4, 32)
+    video_existence = os.path.isfile(file_path)
+    print(video_existence)
     ret, prev = cap.read()
+    print("File")
+    print(prev)
+    print()
     original_frame_list.append(prev)
     prevgray = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
     prevgray = cv2.normalize(src=prevgray, dst=None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     # prevgray = cv2.normalize(src=prevgray, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC1)
-
+    iter_counter = 1
+    total = 0
+    all_frames = 0
     while True:
 
         ret, img = cap.read()
+        all_frames+=1
+        if (iter_counter %5 != 0):
+            iter_counter += 1
+            continue
+        total+=1
         if ret:
             original_frame_list.append(img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -45,8 +63,9 @@ def process_video(file_path):
         # gray = cv2.normalize(src=gray, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC1)
 
         flow = cv2.calcOpticalFlowFarneback(prevgray, gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
-        prevgray = gray
 
+        prevgray = gray
+        iter_counter+=1
         bins = np.hsplit(flow, bins_n)
         out_bins = []
 
@@ -60,22 +79,33 @@ def process_video(file_path):
 
         video_hist.append(frame_hist)
         if not ret: break
-
+    end_t = time.time()
+    print("1 Dynamic HOOF Generator Extractor: " + str(end_t-start_t))
+    print("Total Dynamic Images : "+str(total))
+    print("All  Images : " + str(all_frames))
     return video_hist, original_frame_list
 
 
 if __name__ == '__main__':
-
-    path = 'data/'
-    file_name = 'videoplayback.mp4'
+    print("Starting ")
+    print(cv2.__version__)
+    path = '../data/'
+    file_name = '3.mp4'
     file_list = glob.glob(path+file_name)
 
-    f=path + file_name
+    f= file_list[0]
     print(f)
 
+    start_t = time.time()
+    video_existence = os.path.isfile(f)
+    print(video_existence)
     video_desc, original_frame_list = process_video(f)
-    print(len(video_desc))
-    print(video_desc[27])
-    print(video_desc[26])
-    print(video_desc[25])
-    print(len(original_frame_list))
+    end_t = time.time()
+
+    print("Time: "+str(end_t-start_t))
+
+    # print(len(video_desc))
+    # print(video_desc[27])
+    # print(video_desc[26])
+    # print(video_desc[25])
+    # print(len(original_frame_list))

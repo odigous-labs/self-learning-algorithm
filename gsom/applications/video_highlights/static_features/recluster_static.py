@@ -20,12 +20,12 @@ from gsom.util import kmeans_cluster_gsom as KMeans_Cluster
 
 
 def recluster_gsom(converted_feature_vector_dictionary, SF, learning_itr, smoothing_irt, temporal_contexts,
-                   forget_threshold, dataset, original_frame_list):
+                   forget_threshold, dataset):
     print('Re-clustering process started\n\n')
     count = 0
 
     cluster_no_threshold = 2
-    no_subclusters = 5
+    no_subclusters = 10
 
     recluster_arr = []
     final_cluster_out = []

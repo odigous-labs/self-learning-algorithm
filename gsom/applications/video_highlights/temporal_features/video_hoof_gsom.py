@@ -44,7 +44,7 @@ def hoof_to_gsom(
 
     dynamic_feature_ex_end = time.time()
 
-    print("\nDynamic Feature Extraction Process: " + str(dynamic_feature_ex_end-dynamic_feature_ex_start))
+    print("\n video_hoof_gsom Dynamic Feature Extraction Process: " + str(dynamic_feature_ex_end-dynamic_feature_ex_start))
 
     dynamic_node_first_start = time.time()
 
@@ -72,7 +72,7 @@ def hoof_to_gsom(
                                  output_loc=output_loc_images
                                  )
     dynamic_node_first_end = time.time()
-    print("Dynamic Feature first level GSOM Generated: " + str(dynamic_node_first_end-dynamic_node_first_2+dynamic_node_first_1-dynamic_node_first_start))
+    print("video_hoof_gsom Dynamic Feature first level GSOM Generated: " + str(dynamic_node_first_end-dynamic_node_first_2+dynamic_node_first_1-dynamic_node_first_start))
 
     print('Algorithms completed in', round(time.time() - controller_start, 2), '(s)')
     saved_name = Utils.Utilities.save_object(result_dict, join(output_loc, 'gsom_nodemap_SF-{}'.format(SF)))
