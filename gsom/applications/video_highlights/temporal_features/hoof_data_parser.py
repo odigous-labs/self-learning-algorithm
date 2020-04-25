@@ -1,5 +1,5 @@
 
-import hoof_generator as histogram
+import gsom.applications.video_highlights.temporal_features.hoof_generator as histogram
 import numpy as np
 import glob
 
