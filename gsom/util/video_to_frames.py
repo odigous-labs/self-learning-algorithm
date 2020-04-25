@@ -17,7 +17,9 @@ import os
 
 def get_frames(video_input_path, frame_output_path):
 
+
     original_frame_list = []
+
 
     if (os.path.isfile(video_input_path)):
 
@@ -32,6 +34,7 @@ def get_frames(video_input_path, frame_output_path):
 
         # Capture the very first frame
         return_status, frame = video_capture.read()
+
 
         original_frame_list.append(frame)
 
@@ -50,13 +53,33 @@ def get_frames(video_input_path, frame_output_path):
 
             original_frame_list.append(frame)
 
+########################Develop branch merge starts
+#         current_frame = 0
+#         counter = 0
+#         while(return_status):
+
+#             if(counter==4):
+#                 # Saving the current frame's image as a jpg file
+#                 frame_location = frame_output_path+"frame" + str(current_frame) + ".jpg"
+#                 print ("Creating..." + frame_location)
+#                 cv2.imwrite(frame_location, frame)
+#                 # Increasing the current frame value for the next frame
+#                 current_frame += 1
+#                 counter = 0
+
+#             # Capture frame-by-frame
+#             return_status, frame = video_capture.read()
+#             counter +=1
+########################Develop branch merge end
         # Release the capture
         video_capture.release()
         cv2.destroyAllWindows()
     else:
         print("Invalid input video to capture. Location or the video not exist.")
 
+
     return original_frame_list
+
 
 def run():
     video_input_path = "./data/input_video/input_video.mp4"

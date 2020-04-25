@@ -9,8 +9,17 @@ import math
 
 sys.path.append('../../../')
 
+
 import gsom.applications.video_highlights.static_features.data_parser as Parser
 import gsom.applications.video_highlights.static_features.recluster_static as recluster
+
+from util import utilities as Utils
+import data_parser as Parser
+from util import display as Display_Utils
+from util.kmeans_cluster_gsom import KMeansSOM
+from util.FrameSeperator import FrameSeperator
+from util import video_to_frames
+
 
 from gsom.util import utilities as Utils
 from gsom.util import display as Display_Utils
@@ -22,6 +31,7 @@ from gsom.core4 import core_controller as Core
 from gsom.util import vid_2_frame_osh
 
 # GSOM config
+
 # SF = 0.3
 # forget_threshold = 80  # To include forgetting, threshold should be < learning iterations.
 # temporal_contexts = 1  # If stationary data - keep this at 1
@@ -37,6 +47,22 @@ from gsom.util import vid_2_frame_osh
 #
 # path_to_input_video = "../data/2.mp4"
 # path_to_generated_frames = "./generated_frames/"
+
+SF = 0.83
+forget_threshold = 80  # To include forgetting, threshold should be < learning iterations.
+temporal_contexts = 1  # If stationary data - keep this at 1
+learning_itr = 2
+smoothing_irt = 2
+plot_for_itr = 4  # Unused parameter - just for visualization. Keep this as it is.
+
+# File Config
+experiment_id = 'Exp-' + datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+output_save_location = join('output/', experiment_id)
+
+path_to_input_video = "path to the input video"
+path_to_generated_frames = "./generated_frames/"
+
+
 
 
 def generate_output_config(SF, forget_threshold, temporal_contexts, output_save_location):
@@ -185,6 +211,7 @@ def get_k_and_global_centroid(gsom_nodemap, frame_threshold_for_k):
     return global_centroid[0], k_value
 
 
+
 def cluster_gsom_nodes_with_selection_K_in_KMeans(gsom_nodemap, frame_count_threshold, number_of_clusters):
     kmeans_som = KMeansSOM()
     gsom_list, centroids, labels, k_value = kmeans_som.cluster_GSOM_with_K_selection_in_KMeans(
@@ -193,6 +220,13 @@ def cluster_gsom_nodes_with_selection_K_in_KMeans(gsom_nodemap, frame_count_thre
     if (k_value < 2):
         k_value = 2
     return gsom_list, centroids, labels, k_value
+
+        #video_to_frames.get_frames(video_input_path = path_to_input_video,frame_output_path=path_to_generated_frames);
+        # Process the input files
+        #input_vector_database, labels = Parser.InputParser.parse_input_frames(path_to_generated_frames)
+        #output_loc, output_loc_images = generate_output_config( SF, forget_threshold)
+
+
 
 
 def calculate_const_for_frame(global_centroid, local_centroid, gsom_node, frame):
@@ -386,3 +420,25 @@ if __name__ == '__main__':
     #                                                       forget_threshold,
     #                                                       dataset,
     #                                                       original_frame_list)
+
+       # gsom_nodemap = result_dict[0]['gsom']
+        #clusters = kmeans_cluster.cluster_GSOM(gsom_nodemap,3)
+
+        #frame_seperator = FrameSeperator()
+
+        #labeled_clusteres = frame_seperator.seperate_frames(gsom_nodemap,clusters,labels)
+
+        # Display
+        # display = Display_Utils.Display(result_dict[0]['gsom'], None)
+        # display.setup_labels_for_gsom_nodemap(labels, 2, 'Latent Space of {} : SF={}',
+        #                                       join(output_loc, 'latent_space_' + str(SF) + '_labels'))
+
+      #  gsom_list, centroids, labels = kmeans_cluster.cluster_GSOM(gsom_nodemap, 4)
+       # print("gsom list")
+      #  print(gsom_list)
+      #  print("centroids")
+     #   print(centroids)
+     #   print("labels")
+     #   print(labels)
+     #   print('Completed.')
+

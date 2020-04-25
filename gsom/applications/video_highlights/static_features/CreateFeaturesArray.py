@@ -4,7 +4,7 @@ import sys
 from keras.preprocessing import image
 import time
 sys.path.append('../../')
-from gsom.feature_extracter import VGG
+from feature_extracter import VGG
 
 
 def getFeatureArray(frames_folder_path):
