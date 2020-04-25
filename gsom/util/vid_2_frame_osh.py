@@ -18,6 +18,7 @@ import os
 
 def get_frames(video_input_path, frame_output_path):
     # original_frame_list = []
+    original_frame_count = 0
     if (os.path.isfile(video_input_path)):
 
         # Playing the input video from file
@@ -32,7 +33,7 @@ def get_frames(video_input_path, frame_output_path):
         # Capture the very first frame
         return_status, frame = video_capture.read()
 
-        original_frame_count = 0
+
         current_frame = 0
         counter = 0
         while(return_status):

@@ -14,7 +14,7 @@ import gsom.applications.video_highlights.static_features.data_parser as Parser
 import gsom.applications.video_highlights.static_features.recluster_static as recluster
 
 from util import utilities as Utils
-import data_parser as Parser
+# import data_parser as Parser
 from util import display as Display_Utils
 from util.kmeans_cluster_gsom import KMeansSOM
 from util.FrameSeperator import FrameSeperator
@@ -60,7 +60,7 @@ experiment_id = 'Exp-' + datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-
 output_save_location = join('output/', experiment_id)
 
 path_to_input_video = "path to the input video"
-path_to_generated_frames = "./generated_frames/"
+path_to_generated_frames = "../generated_frames/"
 
 
 
@@ -347,7 +347,7 @@ if __name__ == '__main__':
     dataset = 'video'
 
     path_to_input_video = "../data/2.mp4"
-    path_to_generated_frames = "./generated_frames/"
+    path_to_generated_frames = "../generated_frames/"
 
     # level 2
     second_level_SF = 0.8
