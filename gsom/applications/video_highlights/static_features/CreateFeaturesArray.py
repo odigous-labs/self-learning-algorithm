@@ -2,7 +2,7 @@ import os
 import numpy as np
 import sys
 sys.path.append('../../')
-from gsom.feature_extracter import VGG
+from feature_extracter import VGG
 
 
 def getFeatureArray(frames_folder_path):
